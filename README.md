@@ -1,1 +1,1 @@
- Feedforward autoencoder implemented for batch correction 
+Project1: Feedforward autoencoder implemented for batch correction 
