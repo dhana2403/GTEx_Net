@@ -1,1 +1,1 @@
-Project1: Feedforward autoencoder implemented for batch correction 
+Feedforward autoencoder implemented for batch correction in GTEx
