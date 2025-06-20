@@ -24,11 +24,12 @@ GTEx_Net/
 ├── scripts/
 │ ├── prepare_data.py # End-to-end preparation pipeline
 │ ├── run_batch_correction.py # Trains autoencoder and saves latent outputs
-│ └── visualize_pca.py # 3D PCA visualizations
-├  src/
-│   ├── data_preprocessing.py # Metadata parsing, filtering
-│   ├── data_normalization.py # Log2CPM transformation
-│   └── autoencoder.py # Autoencoder model, training, scaling
+│ ├── visualize_pca.py # 3D PCA visualizations
+│ │
+│ └── src/
+│ ├── data_preprocessing.py # Metadata parsing, filtering
+│ ├── data_normalization.py # Log2CPM transformation
+│ └── autoencoder.py # Autoencoder model, training, scaling
 │
 └── README.md
 
@@ -36,10 +37,10 @@ GTEx_Net/
 
 #### 1. Install dependencies
 
-```bash
 pip install numpy pandas torch scikit-learn matplotlib seaborn
 
 #### 2. Prepare raw data
+
 Download the following GTEx files and place them accordingly:
 
 GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt → data/metadata/
@@ -50,13 +51,14 @@ GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.gct → data/raw/
 
 #### 3. Run data preparation
 
-bash
 python scripts/prepare_data.py
-4. Run batch correction
-bash
+
+#### 4. Run batch correction
+
 python scripts/run_batch_correction.py
-5. Visualize in 3D PCA
-bash
+
+#### 5. Visualize in 3D PCA
+
 python scripts/visualize_pca.py
 
 #### Method Summary
