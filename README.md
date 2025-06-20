@@ -16,7 +16,7 @@ This repository provides a streamlined pipeline for preprocessing, normalizing, 
 
 ### Project Structure
 
-<pre lang="markdown"> ### Project Structure ``` GTEx_Net/ ├── data/ │ └── download.py # Downloads raw data and metadata files from GTEx │ ├── scripts/ │ ├── prepare_data.py # End-to-end preparation pipeline │ ├── run_batch_correction.py # Trains autoencoder and saves latent outputs │ ├── visualize_pca.py # 3D PCA visualizations │ ├── src/ │ ├── data_preprocessing.py # Metadata parsing, filtering │ ├── data_normalization.py # Log2CPM transformation │ └── autoencoder.py # Autoencoder model, training, scaling │ └── README.md ``` </pre>
+<pre lang="markdown"> ### ``` GTEx_Net/ ├── data/ │ └── download.py # Downloads raw data and metadata files from GTEx │ ├── scripts/ │ ├── prepare_data.py # End-to-end preparation pipeline │ ├── run_batch_correction.py # Trains autoencoder and batch corrected outputs │ ├── visualize_pca.py # 3D PCA visualizations │ ├── src/ │ ├── data_preprocessing.py # Metadata cleaning, filtering │ ├── data_normalization.py # Log2CPM transformation │ └── autoencoder.py # Autoencoder model, training, scaling │ └── README.md ``` </pre>
 
 ### Getting Started
 
