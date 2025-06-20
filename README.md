@@ -38,7 +38,8 @@ GTEx_Net/
 
 ```bash
 pip install numpy pandas torch scikit-learn matplotlib seaborn
-2. Prepare raw data
+
+#### 2. Prepare raw data
 Download the following GTEx files and place them accordingly:
 
 GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt → data/metadata/
@@ -47,7 +48,8 @@ GTEx_Analysis_v8_Annotations_SubjectPhenotypesDS.txt → data/metadata/
 
 GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.gct → data/raw/
 
-3. Run data preparation
+#### 3. Run data preparation
+
 bash
 python scripts/prepare_data.py
 4. Run batch correction
@@ -57,7 +59,7 @@ python scripts/run_batch_correction.py
 bash
 python scripts/visualize_pca.py
 
-Method Summary
+#### Method Summary
 
 Normalization: log2(CPM + 1), per tissue
 
