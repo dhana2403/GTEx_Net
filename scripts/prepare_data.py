@@ -15,7 +15,6 @@ def prepare_main(att_path, phe_path, raw_path, processed_dir):
       input_dir = os.path.join('data', 'processed', 'expression', 'readcounts_all')
       output_dir = os.path.join(processed_dir, 'normalized')
 
-      # We assume all tissues are saved as pickle files in input_dir
       tissue_files = [f for f in os.listdir(input_dir) if f.endswith('.pkl')]
  
       sample_counts_list = []
