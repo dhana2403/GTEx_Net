@@ -30,6 +30,6 @@ if __name__ == "__main__":
       att_path = '/Users/dhanalakshmijothi/Desktop/python/GTEx_Net/data/metadata/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt'
       phe_path = '/Users/dhanalakshmijothi/Desktop/python/GTEx_Net/data/metadata/GTEx_Analysis_v8_Annotations_SubjectPhenotypesDS.txt'
       raw_path = '/Users/dhanalakshmijothi/Desktop/python/GTEx_Net/data/raw/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.gct'
-      processed_dir = '/Users/dhanalakshmijothi/Desktop/python/GTEx_Net/data/processed'
+      processed_dir = '/Users/dhanalakshmijothi/Desktop/python/GTEx_Net/scripts/data/processed'
     
       prepare_main(att_path, phe_path, raw_path, processed_dir)
