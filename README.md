@@ -1,4 +1,4 @@
-# GTEx_Net: Gene Expression Analysis & Batch Correction Pipeline
+# GTEx_Net: Batch Correction Pipeline using Autoencoder
 
 This repository provides a streamlined pipeline for preprocessing, normalizing, and batch-correcting RNA-seq expression data from the [GTEx project](https://gtexportal.org/home/), enabling downstream analyses such as clustering and visualization.
 
