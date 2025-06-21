@@ -32,7 +32,7 @@ def normalize_readcounts_for_tissue(tis, attphe_path, input_dir, output_dir, sam
     readcounts_log2cpm = np.log2(readcounts_cpm + 1)
 
     os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, tis)
+    output_path = os.path.join(output_dir, f"{tis}.pkl")
     readcounts_log2cpm.to_pickle(output_path)
 
     sample_counts_list.append({
