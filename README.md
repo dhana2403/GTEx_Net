@@ -52,6 +52,6 @@ Normalization: log2(CPM + 1), per tissue
 
 Batch Correction: Autoencoder trained per tissue, latent space is used as corrected expression
 
-Latent Space: 10-dimensional compressed representation of gene expression
+Latent Space: 3-dimensional compressed representation of gene expression
 
 Visualization: PCA or 3D PCA on corrected data
