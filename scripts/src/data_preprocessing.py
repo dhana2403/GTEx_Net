@@ -112,6 +112,8 @@ def main(att_path, phe_path, raw_path):
 
       samp_ids = attphe['samp_id'].to_list()
 
+     """ Testing small portion of genes initially """
+
       genes_of_interest = [
       'ENSG00000198793', 'ENSG00000118689', 'ENSG00000096717', 'ENSG00000142082',
       'ENSG00000133818', 'ENSG00000121691', 'ENSG00000017427', 'ENSG00000140443',
