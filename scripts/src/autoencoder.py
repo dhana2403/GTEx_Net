@@ -5,91 +5,89 @@ from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 
-class Autoencoder(nn.Module):
-    def __init__(self, input_dim, latent_dim=3):
-        super(Autoencoder, self).__init__()
+class AutoencoderWithClassifier(nn.Module):
+    def __init__(self, input_dim, output_dim, latent_dim, num_tissues, dropout_prob=0.1):
+        super().__init__()
+        # Encoder
         self.encoder = nn.Sequential(
             nn.Linear(input_dim, 8),
+            nn.BatchNorm1d(8),
+            nn.Tanh(),
+            nn.Dropout(dropout_prob),
+            nn.Linear(8, latent_dim),
+            nn.BatchNorm1d(latent_dim),
             nn.ReLU(),
-            nn.Linear(8, latent_dim)
+            nn.Dropout(dropout_prob),
         )
+        # Decoder
         self.decoder = nn.Sequential(
             nn.Linear(latent_dim, 8),
-            nn.ReLU(),
-            nn.Linear(8, input_dim)
+            nn.BatchNorm1d(8),
+            nn.Tanh(),
+            nn.Linear(8, output_dim)
         )
+        # Classifier head on latent
+        self.classifier = nn.Linear(latent_dim, num_tissues)
     
     def forward(self, x):
         latent = self.encoder(x)
         reconstructed = self.decoder(latent)
-        return reconstructed, latent
-    
+        tissue_logits = self.classifier(latent)
+        return reconstructed, latent, tissue_logits
+
 def scale_data(X):
-         """
-         Standard scale the data (mean=0, std=1) per feature
-          Input: numpy array (samples x features)
-         Output: scaled numpy array, scaler object
-         """
-         scaler = StandardScaler()
-         X_scaled = scaler.fit_transform(X)
-         return X_scaled, scaler
-    
-def train_autoencoder(X, batch_size=64, epochs=50, lr=1e-3, device='cpu'):
-        """
-         Train autoencoder on given data X
-         Inputs:
-         X - numpy array, samples x features
-         batch_size - batch size for training
-         epochs - number of epochs
-         lr - learning rate
-         device - 'cpu' or 'cuda'
-         Returns:
-         trained model
-         scaler used for data scaling
-          """
-        X_scaled, scaler = scale_data(X)
-        X_tensor = torch.tensor(X_scaled, dtype=torch.float32).to(device)
-        dataset = TensorDataset(X_tensor)
-        loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    return X_scaled, scaler
 
-        model = Autoencoder(input_dim=X.shape[1]).to(device)
-        criterion = nn.MSELoss()
-        optimizer = optim.Adam(model.parameters(), lr=lr)
+def train_autoencoder_supervised(X, tissue_labels, batch_ids, batch_size=64, epochs=50, lr=1e-3, alpha=1.0, device='cpu'):
+    X_scaled, scaler = scale_data(X)
+    input_dim = X.shape[1]
+    output_dim = input_dim
+    unique_tissues = np.unique(tissue_labels)
+    tissue_to_idx = {t:i for i,t in enumerate(unique_tissues)}
+    y_indices = np.array([tissue_to_idx[t] for t in tissue_labels])
 
-        model.train()
-        for epoch in range(epochs):
-            total_loss = 0
-            for batch in loader:
-                x = batch[0]
-                optimizer.zero_grad()
-                x_recon, _ = model(x)
-                loss = criterion(x_recon, x)
-                loss.backward()
-                optimizer.step()
-                total_loss += loss.item()
-            avg_loss = total_loss/len(loader)
-            print(f"Epoch {epoch+1}/{epochs}, Loss: {avg_loss:.6f}")
+    X_tensor = torch.tensor(X_scaled, dtype=torch.float32).to(device)
+    y_tensor = torch.tensor(y_indices, dtype=torch.long).to(device)
 
-        return model, scaler
-    
+    dataset = TensorDataset(X_tensor, y_tensor)
+    loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+
+    model = AutoencoderWithClassifier(input_dim, output_dim, latent_dim=10, num_tissues=len(unique_tissues)).to(device)
+    criterion_recon = nn.MSELoss()
+    criterion_class = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4)
+
+    model.train()
+    for epoch in range(epochs):
+        total_loss = 0
+        total_recon = 0
+        total_class = 0
+        for x_batch, y_batch in loader:
+            optimizer.zero_grad()
+            x_recon, latent, tissue_logits = model(x_batch)
+            loss_recon = criterion_recon(x_recon, x_batch)
+            loss_class = criterion_class(tissue_logits, y_batch)
+            loss = loss_recon + alpha * loss_class
+            loss.backward()
+            optimizer.step()
+
+            total_loss += loss.item()
+            total_recon += loss_recon.item()
+            total_class += loss_class.item()
+
+        print(f"Epoch {epoch+1}/{epochs}, Total Loss: {total_loss/len(loader):.4f}, Recon: {total_recon/len(loader):.4f}, Class: {total_class/len(loader):.4f}")
+
+    return model, scaler, tissue_to_idx, None
+
 def get_latent_representation(model, X, scaler, device='cpu'):
-        """
-         Generate latent representations for data X using trained model and scaler
-         Inputs:
-         model - trained Autoencoder model
-         X - numpy array samples x features
-         scaler - fitted StandardScaler
-         device - 'cpu' or 'cuda'
-         Returns:
-         latent numpy array (samples x latent_dim)
-         """
-        model.eval()
-        X_scaled = scaler.transform(X)
-        X_tensor = torch.tensor(X_scaled, dtype=torch.float32).to(device)
-        with torch.no_grad():
-         _, latent = model(X_tensor)
-        return latent.cpu().numpy()
-    
+    model.eval()
+    X_scaled = scaler.transform(X)
+    X_tensor = torch.tensor(X_scaled, dtype=torch.float32).to(device)
+    with torch.no_grad():
+        _, latent, _ = model(X_tensor)
+    return latent.cpu().numpy()
 
     
     
