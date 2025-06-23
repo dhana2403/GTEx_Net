@@ -1,4 +1,4 @@
-# GTEx_Net: Batch Correction Pipeline using Autoencoder
+# GTEx_Net: Batch Correction Pipeline using Supervised Autoencoder
 
 This repository provides a streamlined pipeline for preprocessing, normalizing, and batch-correcting RNA-seq expression data from the [GTEx project](https://gtexportal.org/home/), enabling downstream analyses such as clustering and visualization.
 
@@ -50,7 +50,7 @@ python scripts/visualize_pca.py
 
 Normalization: log2(CPM + 1), per tissue
 
-Batch Correction: Autoencoder trained per tissue, latent space is used as corrected expression
+Batch Correction: Supervised autoencoder trained per tissue, using tissue labels to guide the latent space learning; the latent space representation serves as batch-corrected expression
 
 Latent Space: 3-dimensional compressed representation of gene expression
 
