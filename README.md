@@ -55,3 +55,10 @@ Batch Correction: Supervised autoencoder trained per tissue, using tissue labels
 Latent Space: 3-dimensional compressed representation of gene expression
 
 Visualization: PCA or 3D PCA on corrected data
+
+#### Results
+
+[View the 3D PCA plot before batch correction](https://dhana2403.github.io/3D_plots/3d_pca_plot_all_tissues_cpm.html)
+[View the 3D PCA plot after batch correction](https://dhana2403.github.io/3D_plots/3d_pca_plot_all_tissues_after_batchcorrection_autoencoder)
+
+
