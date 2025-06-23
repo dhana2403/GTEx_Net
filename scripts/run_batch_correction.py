@@ -2,7 +2,7 @@ import os
 import pickle
 import numpy as np
 import pandas as pd
-from src.auto1 import train_autoencoder_supervised, get_latent_representation
+from src.autoencoder import train_autoencoder_supervised, get_latent_representation
 
 def run_batch_correction(input_dir, output_dir, metadata_path, device='cpu'):
     os.makedirs(output_dir, exist_ok=True)
