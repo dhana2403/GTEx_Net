@@ -5,29 +5,7 @@ from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 
-class AutoencoderWithClassifier(nn.Module):
-    def __init__(self, input_dim, output_dim, latent_dim, num_tissues, dropout_prob=0.1):
-        super().__init__()
-        # Encoder
-        self.encoder = nn.Sequential(
-            nn.Linear(input_dim, 8),
-            nn.BatchNorm1d(8),
-            nn.Tanh(),
-            nn.Dropout(dropout_prob),
-            nn.Linear(8, latent_dim),
-            nn.BatchNorm1d(latent_dim),
-            nn.ReLU(),
-            nn.Dropout(dropout_prob),
-        )
-        # Decoder
-        self.decoder = nn.Sequential(
-            nn.Linear(latent_dim, 8),
-            nn.BatchNorm1d(8),
-            nn.Tanh(),
-            nn.Linear(8, output_dim)
-        )
-        # Classifier head on latent
-        self.classifier = nn.Linear(latent_dim, num_tissues)
+#COMPLETE CODE WILL BE MADE AVAILABLE SOON#
     
     def forward(self, x):
         latent = self.encoder(x)
