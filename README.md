@@ -18,6 +18,12 @@ This repository provides a streamlined pipeline for preprocessing, normalizing, 
 
 <pre lang="markdown"> ### ``` GTEx_Net/ ├── data/ │ └── download.py # Downloads raw data and metadata files from GTEx │ ├── scripts/ │ ├── prepare_data.py # End-to-end preparation pipeline │ ├── run_batch_correction.py # Trains autoencoder and batch corrected outputs │ ├── visualize_pca.py # 3D PCA visualizations │ ├── src/ │ ├── data_preprocessing.py # Metadata cleaning, filtering │ ├── data_normalization.py # Log2CPM transformation │ └── autoencoder.py # Autoencoder model, training, scaling │ └── README.md ``` </pre>
 
+### Neural Network Architecture
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dhana2403/GTEx_Net/main/neural_network.drawio.png" width="600">
+</p>
+
 ### Getting Started
 
 #### 1. Install dependencies
