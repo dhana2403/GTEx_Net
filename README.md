@@ -2,6 +2,10 @@
 
 This repository provides a streamlined pipeline for preprocessing, normalizing, and batch-correcting RNA-seq expression data from the [GTEx project](https://gtexportal.org/home/), enabling downstream analyses such as clustering and visualization.
 
+<p align="center">
+  <img src="https://github.com/dhana2403/GTEx_Net/blob/main/workflow.png?raw=true" alt="GTEx_Net Workflow" width="600"/>
+</p>
+
 ---
 
 ### Features
