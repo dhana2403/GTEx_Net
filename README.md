@@ -2,10 +2,6 @@
 
 This repository provides a streamlined pipeline for preprocessing, normalizing, and batch-correcting RNA-seq expression data from the [GTEx project](https://gtexportal.org/home/), enabling downstream analyses such as clustering and visualization.
 
-<p align="center">
-  <img src="https://github.com/dhana2403/GTEx_Net/blob/main/workflow.png?raw=true" alt="GTEx_Net Workflow" width="900"/>
-</p>
-
 ---
 
 ### Features
@@ -14,7 +10,12 @@ This repository provides a streamlined pipeline for preprocessing, normalizing, 
 - Log2-CPM normalization per tissue  
 - Autoencoder-based batch correction  
 - PCA / 3D visualization support  
-- Tissue-wise file outputs for modular analysis  
+- Tissue-wise file outputs for modular analysis
+
+  <p align="center">
+  <img src="https://github.com/dhana2403/GTEx_Net/blob/main/workflow.png?raw=true" alt="GTEx_Net Workflow" width="900"/>
+</p>
+
 
 ---
 
