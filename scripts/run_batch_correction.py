@@ -16,7 +16,6 @@ def run_batch_correction(input_dir, output_dir, metadata_path, device='cpu'):
     all_tissue_labels = []
     all_batch_ids = []
 
-    # Load and combine all tissues
     for filename in tissue_files:
         tissue_name = filename.replace('.pkl', '')
         filepath = os.path.join(input_dir, filename)
@@ -25,7 +24,6 @@ def run_batch_correction(input_dir, output_dir, metadata_path, device='cpu'):
         df = pickle.load(open(filepath, 'rb')).T
         samples = df.index.tolist()
 
-        # Filter metadata for samples in this tissue
         meta_subset = metadata.loc[metadata.index.intersection(samples)]
 
         if meta_subset.empty:
@@ -35,27 +33,29 @@ def run_batch_correction(input_dir, output_dir, metadata_path, device='cpu'):
         df = df.loc[meta_subset.index]
         all_samples_dfs.append(df)
 
-        # Collect tissue and batch labels aligned to samples
         all_tissue_labels.extend([tissue_name] * len(df))
         all_batch_ids.extend(meta_subset[['batch_iso', 'batch_exp']].astype(str).agg('_'.join, axis=1).values)
 
-    # Combine all tissues into one DataFrame
     combined_df = pd.concat(all_samples_dfs)
     X = combined_df.values
     tissue_labels = np.array(all_tissue_labels)
     batch_ids = np.array(all_batch_ids)
 
+    # Convert batch_ids to integer indices
+    unique_batches = np.unique(batch_ids)
+    batch_to_idx = {b: i for i, b in enumerate(unique_batches)}
+    batch_indices = np.array([batch_to_idx[b] for b in batch_ids])
+
     print("Training autoencoder on combined data...")
-    model, scaler, tissue_encoder, batch_encoder = train_autoencoder_supervised(
-        X, tissue_labels, batch_ids, device=device
+    model, scaler = train_autoencoder_supervised(
+        X, tissue_labels, batch_indices, batch_size=64, device=device
     )
 
     print("Generating latent representations...")
     latent_all = get_latent_representation(
-        model, X, scaler, device=device
+        model, X, batch_indices, scaler, device=device
     )
 
-    # Split latent embeddings back by tissue and save
     combined_df['tissue'] = tissue_labels
     combined_df['batch'] = batch_ids
     combined_df['index'] = combined_df.index
@@ -65,11 +65,13 @@ def run_batch_correction(input_dir, output_dir, metadata_path, device='cpu'):
     for tissue in np.unique(tissue_labels):
         tissue_idx = combined_df['tissue'] == tissue
         latent_subset = latent_df.loc[tissue_idx.index[tissue_idx]]
-        
+
         save_path = os.path.join(output_dir, f"{tissue}_corrected.pkl")
         with open(save_path, 'wb') as f:
             pickle.dump(latent_subset, f)
         print(f"Saved corrected latent data for tissue {tissue} at {save_path}")
+
+# ----- Entry point -----
 
 if __name__ == "__main__":
     input_dir = "/Users/dhanalakshmijothi/Desktop/python/GTEx_Net/scripts/data/processed/expression/readcounts_all"
