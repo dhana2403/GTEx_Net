@@ -19,7 +19,7 @@ class ConditionalDecoder(nn.Module):
 
     def forward(self, z, batch_idx):
         b_emb = self.batch_embed(batch_idx)
-        z_cat = torch.cat([z, b_emb], dim=1)
+        z_cat = torch.cat([z, b_emb], dim=1) # conditioning step for decoder
         return self.net(z_cat)
 
 # ---- Autoencoder with Conditional Decoder & Tissue Classifier ----
