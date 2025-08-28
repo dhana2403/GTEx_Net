@@ -78,7 +78,7 @@ def train_autoencoder_supervised(
 
     model = AutoencoderWithClassifier(
         input_dim=input_dim,
-        latent_dim=10,
+        latent_dim=4,
         num_tissues=len(unique_tissues),
         num_batches=len(unique_batches)
     ).to(device)
