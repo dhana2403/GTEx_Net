@@ -55,7 +55,7 @@ python scripts/visualize_pca.py
 
 Normalization: log2(CPM + 1), per tissue
 
-Batch Correction: Supervised autoencoder trained per tissue, using tissue labels to guide the latent space learning; the latent space representation serves as batch-corrected expression
+Batch Correction: Supervised autoencoder trained per tissue, using tissue labels to guide the latent space learning and conditional decoder for bypassing batch effects; the latent space representation serves as batch-corrected expression
 
 Latent Space: 3-dimensional compressed representation of gene expression
 
