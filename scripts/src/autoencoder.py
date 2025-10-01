@@ -23,30 +23,7 @@ class ConditionalDecoder(nn.Module):
         return self.net(z_cat)
 
 # ---- Autoencoder with Conditional Decoder & Tissue Classifier ----
-class AutoencoderWithClassifier(nn.Module):
-    def __init__(self, input_dim, latent_dim, num_tissues, num_batches, dropout_prob=0.1):
-        super().__init__()
-        # Encoder
-        self.encoder = nn.Sequential(
-            nn.Linear(input_dim, 8),
-            nn.BatchNorm1d(8),
-            nn.Tanh(),
-            nn.Dropout(dropout_prob),
-            nn.Linear(8, latent_dim),
-            nn.BatchNorm1d(latent_dim),
-            nn.ReLU(),
-            nn.Dropout(dropout_prob),
-        )
-        # Conditional Decoder
-        self.decoder = ConditionalDecoder(latent_dim, num_batches, input_dim)
-        # Classifier head on latent
-        self.classifier = nn.Linear(latent_dim, num_tissues)
-
-    def forward(self, x, batch_idx):
-        latent = self.encoder(x)
-        reconstructed = self.decoder(latent, batch_idx)
-        tissue_logits = self.classifier(latent)
-        return reconstructed, latent, tissue_logits
+code here will be made available soon
 
 # ---- Data scaling ----
 def scale_data(X):
