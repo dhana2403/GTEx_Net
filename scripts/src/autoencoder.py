@@ -23,7 +23,7 @@ class ConditionalDecoder(nn.Module):
         return self.net(z_cat)
 
 # ---- Autoencoder with Conditional Decoder & Tissue Classifier ----
-code here will be made available soon
+# code here will be made available soon
 
 # ---- Data scaling ----
 def scale_data(X):
